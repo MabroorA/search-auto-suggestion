@@ -11,6 +11,7 @@ function App() {
   const [suggestionsResult, setSuggestionsResult] = useState<Suggestions[]>(
     []
   );
+  const [query, setQuery] = useState<string>("");
 
   const fetchSuggestionResults = async (query: string) => {
     try {
@@ -30,8 +31,25 @@ function App() {
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     const query = e.target.value;
+    setQuery(query);
     fetchSuggestionResults(query);
   };
+
+  const boldQueryInTerm = (term:string, query:string) =>{
+    if (!query.trim())
+      return term;
+    
+    // Split where query matches bold
+    const parts = term.split(new RegExp(`(${query})`, 'gi'));
+
+    return parts.map((part, index) =>
+      new RegExp(query, 'i').test(part) ? (
+        <strong key={index} className="font-bold">{part}</strong>
+      ) : (
+        <span key={index}>{part}</span>
+      )
+    );
+  }
   return (
     <div className="  flex flex-col justify-center align-middle p-5  ">
       {/* Search Section */}
@@ -40,9 +58,13 @@ function App() {
         <input className="rounded-lg border-2" onChange={handleInputChange} />
       </div>
       <div className="border-2 border-black rounded-lg">
+
+      {/* Results Section  */}
       {suggestionsResult.map((suggestion) => (
         <div key={suggestion.term}>
-          <a href={suggestion.url}>{suggestion.term}</a>
+          <a href={suggestion.url}>
+              {boldQueryInTerm(suggestion.term, query)}
+            </a>
         </div>
       ))}
       </div>
