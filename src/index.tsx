@@ -9,7 +9,9 @@ const root = ReactDOM.createRoot(
 );
 root.render(
   <React.StrictMode>
+    <main className='  w-full h-full p-2'>
     <App />
+    </main>
   </React.StrictMode>
 );
 
