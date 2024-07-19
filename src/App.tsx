@@ -96,7 +96,10 @@ function App() {
     console.log(e.target.value);
     const query = e.target.value;
     setQuery(query);
-    fetchSuggestionResults();
+
+    if (query.length >= charectersBeforeSuggest) {
+      fetchSuggestionResults();
+    }
   };
 
   const boldQueryInTerm = (term: string, query: string) => {
