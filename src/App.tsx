@@ -2,30 +2,61 @@
 
 import { ChangeEvent, useState } from "react";
 
-type Suggestions = {
+interface SuggestionTerm {
   term: string;
   url: string;
-};
+}
+
+interface Collection {
+  id: string;
+  title: string;
+  url: string;
+}
+
+interface Product {
+  id: string;
+  title: string;
+  url: string;
+  brand: string;
+  price: number;
+  image: string;
+}
+
+interface Data {
+  suggestion_terms: SuggestionTerm[];
+  collections: Collection[];
+  products: Product[];
+}
 
 function App() {
-  const [suggestionsResult, setSuggestionsResult] = useState<Suggestions[]>([]);
   const [query, setQuery] = useState<string>("");
+  const [dataResult, setDataResult] = useState<Data | null>(null);
+  const [suggestionResults, setSuggestionResults] = useState<SuggestionTerm[]>([]);
+  const [collectionResults, setCollectionResults] = useState<Collection[]>([]);
+  const [productResults, setProductResults] = useState<Product[]>([]);
+  
 
   const fetchSuggestionResults = async (query: string) => {
     try {
-      const mockDataUrl = `https://66999d7d2069c438cd72b848.mockapi.io/suggestionTerm?search=${query}`;
-      const res = await fetch(mockDataUrl, { method: "get", mode: "cors" });
+      const mockDataUrl = `/mockdata.json`;
+      const res = await fetch(mockDataUrl);
       console.log(res);
       if (!res.ok) {
         throw new Error("Network response was not ok");
       }
-      const data: Suggestions[] = await res.json();
-      setSuggestionsResult(data);
+      const data: Data = await res.json();
+      
+      setDataResult(data);
+      console.log(data)
+      // const suggestionsResult: SuggestionTerm[] = await res.json()
+      setSuggestionResults(data.suggestion_terms);
+      setCollectionResults(data.collections);
+      setProductResults(data.products);
+      console.log(suggestionResults)
     } catch (error) {
       console.error("Error Fetching Suggestion Results", error);
     }
   };
-
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     const query = e.target.value;
@@ -61,13 +92,13 @@ function App() {
       </div>
 
       {/* Results Section  */}
-      {query.trim() && suggestionsResult.length > 0 && (
+      {query.trim() && suggestionResults.length > 0 && (
         <div className="border border-gray-300 rounded-lg mt-4 ">
           <div className="flex flex-row justify-between bg-slate-300 text-gray-700 p-2">
             <div className=" font-medium  w-full">SUGGESTIONS</div>
             <div className="">close</div>
           </div>
-          {suggestionsResult.map((suggestion) => (
+          {suggestionResults.map((suggestion) => (
             <div className="p-2">
               <div
                 key={suggestion.term}

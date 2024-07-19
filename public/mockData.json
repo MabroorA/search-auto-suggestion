@@ -1,0 +1,258 @@
+{
+  "suggestion_terms": [
+    {
+      "term": "eiusmod",
+      "url": "https://example.com/mollit"
+    },
+    {
+      "term": "nostrud",
+      "url": "https://example.com/quis"
+    },
+    {
+      "term": "deserunt",
+      "url": "https://example.com/nostrud"
+    },
+    {
+      "term": "quis",
+      "url": "https://example.com/sint"
+    },
+    {
+      "term": "dolore",
+      "url": "https://example.com/proident"
+    },
+    {
+      "term": "reprehenderit",
+      "url": "https://example.com/culpa"
+    },
+    {
+      "term": "nostrud",
+      "url": "https://example.com/do"
+    },
+    {
+      "term": "voluptate",
+      "url": "https://example.com/nulla"
+    },
+    {
+      "term": "aliqua",
+      "url": "https://example.com/labore"
+    },
+    {
+      "term": "in",
+      "url": "https://example.com/anim"
+    }
+  ],
+  "collections": [
+    {
+      "id": "669a551f4b9af7867048fdd1",
+      "title": "Lorem tempor",
+      "url": "https://example.com/reprehenderit mollit"
+    },
+    {
+      "id": "669a551f8a638e8ffa4e14db",
+      "title": "anim in",
+      "url": "https://example.com/laborum adipisicing"
+    },
+    {
+      "id": "669a551f5f829882c65632c5",
+      "title": "exercitation ea",
+      "url": "https://example.com/adipisicing irure"
+    },
+    {
+      "id": "669a551fcdef6e0f8a8bd701",
+      "title": "laboris aute",
+      "url": "https://example.com/amet aliquip"
+    },
+    {
+      "id": "669a551ff72f824560b3bf16",
+      "title": "ad excepteur",
+      "url": "https://example.com/dolore qui"
+    },
+    {
+      "id": "669a551f334cf2b97c32250e",
+      "title": "labore ad",
+      "url": "https://example.com/ex aliqua"
+    },
+    {
+      "id": "669a551fa99442d103a1d1cd",
+      "title": "sit aute",
+      "url": "https://example.com/minim veniam"
+    },
+    {
+      "id": "669a551f9ade59f07e927bf4",
+      "title": "ex sint",
+      "url": "https://example.com/magna velit"
+    },
+    {
+      "id": "669a551ffff6f3d00ced1a91",
+      "title": "magna elit",
+      "url": "https://example.com/ut consequat"
+    },
+    {
+      "id": "669a551fd94576a950a06296",
+      "title": "sit consectetur",
+      "url": "https://example.com/qui deserunt"
+    }
+  ],
+  "products": [
+    {
+      "id": "669a551fcbb86b18c8dbbdc9",
+      "title": "cillum aliqua magna",
+      "url": "https://example.com/adipisicing nisi consequat",
+      "brand": "Zillidium",
+      "price": 136.75,
+      "image": "https://example.com/images/est.jpg"
+    },
+    {
+      "id": "669a551f42a797f23f4976e6",
+      "title": "consectetur est ipsum",
+      "url": "https://example.com/pariatur tempor in",
+      "brand": "Biotica",
+      "price": 749.05,
+      "image": "https://example.com/images/commodo.jpg"
+    },
+    {
+      "id": "669a551f5a5310db625eeb1f",
+      "title": "deserunt ea eu",
+      "url": "https://example.com/consequat labore est",
+      "brand": "Oatfarm",
+      "price": 865.64,
+      "image": "https://example.com/images/incididunt.jpg"
+    },
+    {
+      "id": "669a551f090dea0134ac3674",
+      "title": "ipsum et id",
+      "url": "https://example.com/dolor minim sunt",
+      "brand": "Ersum",
+      "price": 123.62,
+      "image": "https://example.com/images/minim.jpg"
+    },
+    {
+      "id": "669a551ff18731c2e9051d6c",
+      "title": "sint ad irure",
+      "url": "https://example.com/commodo elit labore",
+      "brand": "Springbee",
+      "price": 992.01,
+      "image": "https://example.com/images/laboris.jpg"
+    },
+    {
+      "id": "669a551fe29fa52437d568ca",
+      "title": "dolor laborum quis",
+      "url": "https://example.com/in anim cillum",
+      "brand": "Stucco",
+      "price": 263.57,
+      "image": "https://example.com/images/amet.jpg"
+    },
+    {
+      "id": "669a551f5d5a59363f45d9a8",
+      "title": "id ullamco ex",
+      "url": "https://example.com/culpa aute proident",
+      "brand": "Imperium",
+      "price": 983.82,
+      "image": "https://example.com/images/nostrud.jpg"
+    },
+    {
+      "id": "669a551f2363c83a0061b403",
+      "title": "nostrud consequat amet",
+      "url": "https://example.com/culpa proident ipsum",
+      "brand": "Prosure",
+      "price": 154.25,
+      "image": "https://example.com/images/nostrud.jpg"
+    },
+    {
+      "id": "669a551fe917d074d4a8cbe1",
+      "title": "nulla proident pariatur",
+      "url": "https://example.com/mollit labore nisi",
+      "brand": "Idealis",
+      "price": 735.24,
+      "image": "https://example.com/images/cupidatat.jpg"
+    },
+    {
+      "id": "669a551f1c24900382e4768b",
+      "title": "laborum ex ea",
+      "url": "https://example.com/officia laboris non",
+      "brand": "Wrapture",
+      "price": 703.65,
+      "image": "https://example.com/images/minim.jpg"
+    },
+    {
+      "id": "669a551ffa516f650b7c15e3",
+      "title": "sint veniam velit",
+      "url": "https://example.com/minim enim nisi",
+      "brand": "Realysis",
+      "price": 968.37,
+      "image": "https://example.com/images/minim.jpg"
+    },
+    {
+      "id": "669a551f7472177a8acd0f5b",
+      "title": "laboris et incididunt",
+      "url": "https://example.com/et et nostrud",
+      "brand": "Automon",
+      "price": 592.9,
+      "image": "https://example.com/images/excepteur.jpg"
+    },
+    {
+      "id": "669a551f0ed7244030a15a3a",
+      "title": "anim sint qui",
+      "url": "https://example.com/nostrud proident labore",
+      "brand": "Trasola",
+      "price": 581.8,
+      "image": "https://example.com/images/consequat.jpg"
+    },
+    {
+      "id": "669a551f16cbfe5ff8ab430d",
+      "title": "mollit laborum cillum",
+      "url": "https://example.com/consectetur culpa aute",
+      "brand": "Elemantra",
+      "price": 781.74,
+      "image": "https://example.com/images/cupidatat.jpg"
+    },
+    {
+      "id": "669a551f0b166f6858d699f6",
+      "title": "consequat occaecat esse",
+      "url": "https://example.com/ipsum elit occaecat",
+      "brand": "Equitax",
+      "price": 112.6,
+      "image": "https://example.com/images/id.jpg"
+    },
+    {
+      "id": "669a551fdb5ee210e3d82b71",
+      "title": "nisi labore deserunt",
+      "url": "https://example.com/proident laborum aute",
+      "brand": "Jimbies",
+      "price": 958.53,
+      "image": "https://example.com/images/elit.jpg"
+    },
+    {
+      "id": "669a551ff6dd974e25c2ff78",
+      "title": "esse esse dolor",
+      "url": "https://example.com/tempor eu laborum",
+      "brand": "Ecratic",
+      "price": 258.92,
+      "image": "https://example.com/images/aliqua.jpg"
+    },
+    {
+      "id": "669a551f52e0ef8abf9570b6",
+      "title": "ex esse fugiat",
+      "url": "https://example.com/pariatur adipisicing duis",
+      "brand": "Liquicom",
+      "price": 679.87,
+      "image": "https://example.com/images/minim.jpg"
+    },
+    {
+      "id": "669a551f04268061278baddb",
+      "title": "laboris amet ex",
+      "url": "https://example.com/sint anim est",
+      "brand": "Pathways",
+      "price": 790.58,
+      "image": "https://example.com/images/aliquip.jpg"
+    },
+    {
+      "id": "669a551f649d3b05798225fc",
+      "title": "cillum deserunt aliqua",
+      "url": "https://example.com/amet fugiat eiusmod",
+      "brand": "Ecstasia",
+      "price": 263.65,
+      "image": "https://example.com/images/aliqua.jpg"
+    }
+  ]
+}
