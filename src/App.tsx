@@ -37,7 +37,7 @@ function App() {
   const [collectionResults, setCollectionResults] = useState<Collection[]>([]);
   const [productResults, setProductResults] = useState<Product[]>([]);
 
-  const fetchSuggestionResults = async (query: string) => {
+  const fetchSuggestionResults = async () => {
     try {
       const mockDataUrl = `/mockdata.json`;
       const res = await fetch(mockDataUrl);
@@ -49,20 +49,44 @@ function App() {
 
       setDataResult(data);
       console.log(data);
-      // const suggestionsResult: SuggestionTerm[] = await res.json()
-      setSuggestionResults(data.suggestion_terms);
-      setCollectionResults(data.collections);
-      setProductResults(data.products);
-      console.log(suggestionResults);
+      await handleDataresults(data);
     } catch (error) {
       console.error("Error Fetching Suggestion Results", error);
+    }
+  };
+  const handleDataresults = async (data: Data) => {
+    try {
+      // filter suggestions with query only
+      const filteredSuggestions = data.suggestion_terms
+        .filter((suggestion) =>
+          suggestion.term.toLowerCase().includes(query.toLowerCase())
+        )
+        .slice(0, 5);
+      // filter collection
+      const filteredCollections = data.collections
+        .filter((collection) =>
+          collection.title.toLowerCase().includes(query.toLowerCase())
+        )
+        .slice(0, 2);
+      // filter Products
+      const filteredProducts = data.products
+        .filter((product) =>
+          product.title.toLowerCase().includes(query.toLowerCase())
+        )
+        .slice(0, 5);
+      setSuggestionResults(filteredSuggestions);
+      setCollectionResults(filteredCollections);
+      setProductResults(filteredProducts);
+      console.log(suggestionResults);
+    } catch (error) {
+      console.error("Error Handling Mock Data Results", error);
     }
   };
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     const query = e.target.value;
     setQuery(query);
-    fetchSuggestionResults(query);
+    fetchSuggestionResults();
   };
 
   const boldQueryInTerm = (term: string, query: string) => {
@@ -89,7 +113,9 @@ function App() {
       {/* Search Section */}
       <div className="flex flex-row justify-center items-center space-x-2">
         <div className="text-black font-bold">Search</div>
-        <input className="rounded-lg border-2" onChange={handleInputChange} />
+        <div>
+          <input className="rounded-lg border-2" onChange={handleInputChange} />
+        </div>
       </div>
 
       {/* Results Section */}
@@ -162,4 +188,4 @@ function App() {
 export default App;
 
 // Suggestion result
-//  three blocks: Suggestion term, Collection and Product.
+//  Add Filter feature for limit 
