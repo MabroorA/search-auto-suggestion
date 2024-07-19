@@ -1,10 +1,14 @@
 // import './App.css';
 
-import { ChangeEvent, useState } from "react";
-import useSectionToggles, { } from "./use-section-toggles";
-import { Collection, Data, Product, SuggestionTerm, TOGGLE_SECTIONS } from "./types";
-
-
+import { ChangeEvent, useEffect, useState } from "react";
+import useSectionToggles from "./use-section-toggles";
+import {
+  Collection,
+  Data,
+  Product,
+  SuggestionTerm,
+  TOGGLE_SECTIONS,
+} from "./types";
 
 function App() {
   const [query, setQuery] = useState<string>("");
@@ -24,43 +28,58 @@ function App() {
     handleToggleSection,
   } = useSectionToggles();
 
-  const fetchSuggestionResults = async () => {
-    try {
-      const mockDataUrl = `/mockdata.json`;
-      const res = await fetch(mockDataUrl);
-      console.log(res);
-      if (!res.ok) {
-        throw new Error("Network response was not ok");
+  useEffect(() => {
+    const fetchSuggestionResults = async () => {
+      try {
+        const mockDataUrl = `/mockdata.json`;
+        const res = await fetch(mockDataUrl);
+        console.log(res);
+        if (!res.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const data: Data = await res.json();
+  
+        setDataResult(data);
+        console.log(data);
+        handleDataresults();
+      } catch (error) {
+        console.error("Error Fetching Suggestion Results", error);
       }
-      const data: Data = await res.json();
+    };
+    fetchSuggestionResults();
 
-      setDataResult(data);
-      console.log(data);
-      await handleDataresults(data);
-    } catch (error) {
-      console.error("Error Fetching Suggestion Results", error);
+  },[])
+
+  // if query ,dataresult or charecters before suggest are changed,rest of the suggestion data is reset. 
+  useEffect(() => {
+    if (dataResult && query.length >= charectersBeforeSuggest) {
+      // if data result is avalible and query length meets the charectersBeforeSuggest or higher than data is fetched
+      handleDataresults();
+    } else {
+      setSuggestionResults([]);
+      setCollectionResults([]);
+      setProductResults([]);
     }
-  };
-  const handleDataresults = async (data: Data) => {
+  }, [query, dataResult, charectersBeforeSuggest]);
+  
+  const handleDataresults =  () => {
     try {
+      if (!dataResult) return;
       // filter suggestions with query only
-      const filteredSuggestions = data.suggestion_terms
+      const filteredSuggestions = dataResult.suggestion_terms
         .filter((suggestion) =>
           suggestion.term.toLowerCase().includes(query.toLowerCase())
         )
-        .slice(0, 5);
       // filter collection
-      const filteredCollections = data.collections
+      const filteredCollections = dataResult.collections
         .filter((collection) =>
           collection.title.toLowerCase().includes(query.toLowerCase())
         )
-        .slice(0, 2);
       // filter Products
-      const filteredProducts = data.products
+      const filteredProducts = dataResult.products
         .filter((product) =>
           product.title.toLowerCase().includes(query.toLowerCase())
         )
-        .slice(0, 5);
       setSuggestionResults(filteredSuggestions);
       setCollectionResults(filteredCollections);
       setProductResults(filteredProducts);
@@ -70,13 +89,8 @@ function App() {
     }
   };
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     const query = e.target.value;
     setQuery(query);
-
-    if (query.length >= charectersBeforeSuggest) {
-      fetchSuggestionResults();
-    }
   };
 
   const boldQueryInTerm = (term: string, query: string) => {
@@ -100,37 +114,35 @@ function App() {
     setCharectersBeforeSuggest(Number(e.target.value));
   };
   return (
-    <div className="flex flex-col justify-center  mx-auto p-5 w-2/5  max-w-lg">
+    <div className="flex flex-col justify-center  mx-auto p-5  max-w-lg ">
       {/* Settings */}
-      <div className="flex flex-col justify-center py-4 space-y-4 ">
+      <div className="flex flex-col justify-center py-4 space-y-4 border border-gray-700 rounded-lg p-2">
         {/* turn of section */}
-        <div className="flex flex-row justify-between space-x-2 bg-white rounded-lg ">
-          <div className="text-black font-bold text-lg mb-2">Turn Off</div>
-          <div className="flex flex-row space-x-2">
+        <div className="flex flex-col  space-y-2 bg-white rounded-lg ">
+          <div className="text-black font-bold text-lg mb-2">
+            Control Settings
+          </div>
+          <div className="flex flex-col md:flex-row justify-start md:space-x-2 ">
             <button
               className={`border rounded-md ${
-                isSuggestionsOpen
-                  ? "bg-black text-white"
-                  : "bg-red-800 text-white"
-              } p-1`}
+                isSuggestionsOpen ? "bg-green-500 " : "bg-red-500  "
+              } py-2 px-4 `}
               onClick={() => handleToggleSection(TOGGLE_SECTIONS.SUGGESTIONS)}
             >
               Suggestions
             </button>
             <button
               className={`border rounded-md ${
-                isCollectionsOpen
-                  ? "bg-black text-white"
-                  : "bg-red-800 text-white"
-              } p-1`}
+                isCollectionsOpen ? "bg-green-500 " : "bg-red-500 "
+              } py-2 px-4`}
               onClick={() => handleToggleSection(TOGGLE_SECTIONS.COLLECTIONS)}
             >
               Collections
             </button>
             <button
               className={`border rounded-md ${
-                isProductsOpen ? "bg-black text-white" : "bg-red-800 text-white"
-              } p-1`}
+                isProductsOpen ? "bg-green-500 " : "bg-red-500 "
+              } py-2 px-4`}
               onClick={() => handleToggleSection(TOGGLE_SECTIONS.PRODUCTS)}
             >
               Products
@@ -138,22 +150,25 @@ function App() {
           </div>
         </div>
         {/* Letters before suggestion */}
-        <div className="flex flex-row justify-between ">
-          <div>Characters needed for suggestion</div>
+        <div className="flex flex-col ">
+          <div className="flex flex-row justify-between">
+            <div className="py-2">Characters needed for suggestion</div>
+            <div className="mt-2">
+              <span>Current value: </span>
+              <span className="font-bold">{charectersBeforeSuggest}</span>
+            </div>
+          </div>
+
           <input
-            className="rounded-lg border-2"
+            className="rounded-lg border-2 py-1 px-2 "
             type="number"
             value={charectersBeforeSuggest}
             onChange={handleCharecterChange}
           />
         </div>
-        <div className="mt-2">
-          <span>Current value: </span>
-          <span className="font-bold">{charectersBeforeSuggest}</span>
-        </div>
       </div>
       {/* Search Section */}
-      <div className="flex flex-row items-center justify-between  ">
+      <div className="flex flex-row items-center justify-between mt-8  ">
         <div className="text-black font-bold">Search</div>
         <div className="flex-grow ml-2">
           <input
