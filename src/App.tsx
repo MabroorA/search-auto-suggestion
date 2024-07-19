@@ -1,33 +1,10 @@
 // import './App.css';
 
 import { ChangeEvent, useState } from "react";
-import useSectionToggles, { TOGGLE_SECTIONS } from "./use-section-toggles";
+import useSectionToggles, { } from "./use-section-toggles";
+import { Collection, Data, Product, SuggestionTerm, TOGGLE_SECTIONS } from "./types";
 
-interface SuggestionTerm {
-  term: string;
-  url: string;
-}
 
-interface Collection {
-  id: string;
-  title: string;
-  url: string;
-}
-
-interface Product {
-  id: string;
-  title: string;
-  url: string;
-  brand: string;
-  price: number;
-  image: string;
-}
-
-interface Data {
-  suggestion_terms: SuggestionTerm[];
-  collections: Collection[];
-  products: Product[];
-}
 
 function App() {
   const [query, setQuery] = useState<string>("");

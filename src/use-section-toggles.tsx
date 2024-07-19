@@ -1,10 +1,7 @@
 import { useState } from "react";
+import { TOGGLE_SECTIONS } from "./types";
 
-export enum TOGGLE_SECTIONS {
-  SUGGESTIONS = "suggestions",
-  PRODUCTS = "products",
-  COLLECTIONS = "collections",
-}
+
 
 const useSectionToggles = () => {
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState<boolean>(true);
