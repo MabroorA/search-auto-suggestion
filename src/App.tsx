@@ -38,7 +38,7 @@ function App() {
           throw new Error("Network response was not ok");
         }
         const data: Data = await res.json();
-  
+
         setDataResult(data);
         console.log(data);
         handleDataresults();
@@ -47,10 +47,9 @@ function App() {
       }
     };
     fetchSuggestionResults();
+  }, []);
 
-  },[])
-
-  // if query ,dataresult or charecters before suggest are changed,rest of the suggestion data is reset. 
+  // if query ,dataresult or charecters before suggest are changed,rest of the suggestion data is reset.
   useEffect(() => {
     if (dataResult && query.length >= charectersBeforeSuggest) {
       // if data result is avalible and query length meets the charectersBeforeSuggest or higher than data is fetched
@@ -61,25 +60,23 @@ function App() {
       setProductResults([]);
     }
   }, [query, dataResult, charectersBeforeSuggest]);
-  
-  const handleDataresults =  () => {
+
+  const handleDataresults = () => {
     try {
       if (!dataResult) return;
       // filter suggestions with query only
-      const filteredSuggestions = dataResult.suggestion_terms
-        .filter((suggestion) =>
+      const filteredSuggestions = dataResult.suggestion_terms.filter(
+        (suggestion) =>
           suggestion.term.toLowerCase().includes(query.toLowerCase())
-        )
+      );
       // filter collection
-      const filteredCollections = dataResult.collections
-        .filter((collection) =>
-          collection.title.toLowerCase().includes(query.toLowerCase())
-        )
+      const filteredCollections = dataResult.collections.filter((collection) =>
+        collection.title.toLowerCase().includes(query.toLowerCase())
+      );
       // filter Products
-      const filteredProducts = dataResult.products
-        .filter((product) =>
-          product.title.toLowerCase().includes(query.toLowerCase())
-        )
+      const filteredProducts = dataResult.products.filter((product) =>
+        product.title.toLowerCase().includes(query.toLowerCase())
+      );
       setSuggestionResults(filteredSuggestions);
       setCollectionResults(filteredCollections);
       setProductResults(filteredProducts);
@@ -184,16 +181,21 @@ function App() {
           {/* Suggestions */}
           {isSuggestionsOpen && (
             <div>
-              <div className="flex flex-row justify-between bg-slate-300 text-gray-700 p-2">
-                <div className="font-medium w-full">SUGGESTIONS</div>
-                <button
-                  onClick={() =>
-                    handleToggleSection(TOGGLE_SECTIONS.SUGGESTIONS)
-                  }
-                >
-                  Close
-                </button>
-              </div>
+              {suggestionResults.length > 0 ? (
+                <div className="flex flex-row justify-between bg-slate-300 text-gray-700 p-2">
+                  <div className="font-medium w-full">SUGGESTIONS</div>
+                  <button
+                    onClick={() =>
+                      handleToggleSection(TOGGLE_SECTIONS.SUGGESTIONS)
+                    }
+                  >
+                    Close
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
+
               {suggestionResults.length > 0
                 ? suggestionResults.map((suggestion) => (
                     <div
@@ -212,16 +214,20 @@ function App() {
           {/* Collections */}
           {isCollectionsOpen && (
             <div>
-              <div className="flex flex-row justify-between bg-slate-300 text-gray-700 p-2">
-                <div className="font-medium w-full">COLLECTIONS</div>
-                <button
-                  onClick={() =>
-                    handleToggleSection(TOGGLE_SECTIONS.COLLECTIONS)
-                  }
-                >
-                  Close
-                </button>
-              </div>
+              {collectionResults.length > 0 ? (
+                <div className="flex flex-row justify-between bg-slate-300 text-gray-700 p-2">
+                  <div className="font-medium w-full">COLLECTIONS</div>
+                  <button
+                    onClick={() =>
+                      handleToggleSection(TOGGLE_SECTIONS.COLLECTIONS)
+                    }
+                  >
+                    Close
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
               {collectionResults.length > 0
                 ? collectionResults.map((collection) => (
                     <div
@@ -239,14 +245,21 @@ function App() {
           {/* Products */}
           {isProductsOpen && (
             <div>
-              <div className="flex flex-row justify-between bg-slate-300 text-gray-700 p-2">
-                <div className="font-medium w-full">PRODUCTS</div>
-                <button
-                  onClick={() => handleToggleSection(TOGGLE_SECTIONS.PRODUCTS)}
-                >
-                  Close
-                </button>
-              </div>
+              {productResults.length > 0 ? (
+                <div className="flex flex-row justify-between bg-slate-300 text-gray-700 p-2">
+                  <div className="font-medium w-full">PRODUCTS</div>
+                  <button
+                    onClick={() =>
+                      handleToggleSection(TOGGLE_SECTIONS.PRODUCTS)
+                    }
+                  >
+                    Close
+                  </button>
+                </div>
+              ) : (
+                ""
+              )}
+
               {productResults.length > 0
                 ? productResults.map((product) => (
                     <div
