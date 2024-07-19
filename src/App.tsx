@@ -1,6 +1,7 @@
 // import './App.css';
 
 import { ChangeEvent, useState } from "react";
+import useSectionToggles, { TOGGLE_SECTIONS } from "./use-section-toggles";
 
 interface SuggestionTerm {
   term: string;
@@ -36,9 +37,15 @@ function App() {
   );
   const [collectionResults, setCollectionResults] = useState<Collection[]>([]);
   const [productResults, setProductResults] = useState<Product[]>([]);
-  const [isSuggestionsOpen, setIsSuggestionsOpen] = useState<boolean>(true);
-  const [isCollectionsOpen, setIsCollectionsOpen] = useState<boolean>(true);
-  const [isProductsOpen, setIsProductsOpen] = useState<boolean>(true);
+  const [charectersBeforeSuggest, setCharectersBeforeSuggest] =
+    useState<number>(1);
+
+  const {
+    isCollectionsOpen,
+    isProductsOpen,
+    isSuggestionsOpen,
+    handleToggleSection,
+  } = useSectionToggles();
 
   const fetchSuggestionResults = async () => {
     try {
@@ -108,42 +115,25 @@ function App() {
       )
     );
   };
-  const handleToggleSection = (section: string) => {
-    switch (section) {
-      case "suggestions":
-        setIsSuggestionsOpen(!isSuggestionsOpen);
-        break;
-      case "collections":
-        setIsCollectionsOpen(!isCollectionsOpen);
-        break;
-      case "products":
-        setIsProductsOpen(!isProductsOpen);
-        break;
-      default:
-        break;
-    }
+
+  const handleCharecterChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setCharectersBeforeSuggest(Number(e.target.value));
   };
   return (
-    <div className="flex flex-col justify-center  mx-auto p-5 w-2/5">
-      {/* Search Section */}
-      <div className="flex flex-row justify-center items-center space-x-2">
-        <div className="text-black font-bold">Search</div>
-        <div>
-          <input className="rounded-lg border-2" onChange={handleInputChange} />
-        </div>
+    <div className="flex flex-col justify-center  mx-auto p-5 w-2/5  max-w-lg">
+      {/* Settings */}
+      <div className="flex flex-col justify-center py-4 space-y-4 ">
         {/* turn of section */}
-        <div className="flex flex-row space-x-2 max-w-lg bg-white rounded-lg ">
-          <div className="text-black font-bold text-lg mb-2">
-            Turn Off Block
-          </div>
+        <div className="flex flex-row justify-between space-x-2 bg-white rounded-lg ">
+          <div className="text-black font-bold text-lg mb-2">Turn Off</div>
           <div className="flex flex-row space-x-2">
             <button
               className={`border rounded-md ${
                 isSuggestionsOpen
                   ? "bg-black text-white"
-                  : "bg-red-300 text-white"
+                  : "bg-red-800 text-white"
               } p-1`}
-              onClick={() => handleToggleSection("suggestions")}
+              onClick={() => handleToggleSection(TOGGLE_SECTIONS.SUGGESTIONS)}
             >
               Suggestions
             </button>
@@ -151,21 +141,45 @@ function App() {
               className={`border rounded-md ${
                 isCollectionsOpen
                   ? "bg-black text-white"
-                  : "bg-red-300 text-white"
+                  : "bg-red-800 text-white"
               } p-1`}
-              onClick={() => handleToggleSection("collections")}
+              onClick={() => handleToggleSection(TOGGLE_SECTIONS.COLLECTIONS)}
             >
               Collections
             </button>
             <button
               className={`border rounded-md ${
-                isProductsOpen ? "bg-black text-white" : "bg-red-300 text-white"
+                isProductsOpen ? "bg-black text-white" : "bg-red-800 text-white"
               } p-1`}
-              onClick={() => handleToggleSection("products")}
+              onClick={() => handleToggleSection(TOGGLE_SECTIONS.PRODUCTS)}
             >
               Products
             </button>
           </div>
+        </div>
+        {/* Letters before suggestion */}
+        <div className="flex flex-row justify-between ">
+          <div>Characters needed for suggestion</div>
+          <input
+            className="rounded-lg border-2"
+            type="number"
+            value={charectersBeforeSuggest}
+            onChange={handleCharecterChange}
+          />
+        </div>
+        <div className="mt-2">
+          <span>Current value: </span>
+          <span className="font-bold">{charectersBeforeSuggest}</span>
+        </div>
+      </div>
+      {/* Search Section */}
+      <div className="flex flex-row items-center justify-between  ">
+        <div className="text-black font-bold">Search</div>
+        <div className="flex-grow ml-2">
+          <input
+            className="rounded-lg border-2 w-full p-1"
+            onChange={handleInputChange}
+          />
         </div>
       </div>
 
@@ -177,7 +191,11 @@ function App() {
             <div>
               <div className="flex flex-row justify-between bg-slate-300 text-gray-700 p-2">
                 <div className="font-medium w-full">SUGGESTIONS</div>
-                <button onClick={() => setIsSuggestionsOpen(false)}>
+                <button
+                  onClick={() =>
+                    handleToggleSection(TOGGLE_SECTIONS.SUGGESTIONS)
+                  }
+                >
                   Close
                 </button>
               </div>
@@ -201,7 +219,11 @@ function App() {
             <div>
               <div className="flex flex-row justify-between bg-slate-300 text-gray-700 p-2">
                 <div className="font-medium w-full">COLLECTIONS</div>
-                <button onClick={() => setIsCollectionsOpen(false)}>
+                <button
+                  onClick={() =>
+                    handleToggleSection(TOGGLE_SECTIONS.COLLECTIONS)
+                  }
+                >
                   Close
                 </button>
               </div>
@@ -224,7 +246,11 @@ function App() {
             <div>
               <div className="flex flex-row justify-between bg-slate-300 text-gray-700 p-2">
                 <div className="font-medium w-full">PRODUCTS</div>
-                <button onClick={() => setIsProductsOpen(false)}>Close</button>
+                <button
+                  onClick={() => handleToggleSection(TOGGLE_SECTIONS.PRODUCTS)}
+                >
+                  Close
+                </button>
               </div>
               {productResults.length > 0
                 ? productResults.map((product) => (
