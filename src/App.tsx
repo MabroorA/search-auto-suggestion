@@ -18,11 +18,6 @@ function App() {
   const { suggestionResults, collectionResults, productResults, dataResult } =
     useSearch({ input: query, url: "/mockdata.json", charectersBeforeSuggest:charectersBeforeSuggest });
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const query = e.target.value;
-    setQuery(query);
-  };
-
   const boldQueryInTerm = (term: string, query: string) => {
     if (!query.trim()) return term;
 
@@ -38,11 +33,9 @@ function App() {
         <span key={index}>{part}</span>
       )
     );
-  };
+  }; 
 
-  const handleCharecterChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setCharectersBeforeSuggest(Number(e.target.value));
-  };
+  
   return (
     <div className="flex flex-col justify-center max-w-lg p-5 mx-auto ">
       {/* Settings */}
@@ -93,7 +86,7 @@ function App() {
             className="px-2 py-1 border-2 rounded-lg "
             type="number"
             value={charectersBeforeSuggest}
-            onChange={handleCharecterChange}
+            onChange={(event) => setCharectersBeforeSuggest(parseInt(event.target.value))}
           />
         </div>
       </div>
@@ -103,7 +96,7 @@ function App() {
         <div className="flex-grow ml-2">
           <input
             className="w-full p-1 border-2 rounded-lg"
-            onChange={handleInputChange}
+            onChange={(event) => setQuery(event.target.value)}
           />
         </div>
       </div>

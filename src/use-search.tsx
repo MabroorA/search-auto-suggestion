@@ -1,10 +1,10 @@
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Data, SuggestionTerm, Product, Collection } from "./types";
 
 type UseSearchProps = {
   input:string
   url: string
-  charectersBeforeSuggest: number
+  charectersBeforeSuggest?: number
 };
 
 const useSearch = ({input, url, charectersBeforeSuggest = 1 }: UseSearchProps) => {
