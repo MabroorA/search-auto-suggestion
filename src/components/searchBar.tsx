@@ -189,9 +189,10 @@ function SearchBar() {
             </div>
 
             {products.map((product) => (
-              <div
+              <a
+                href={product.url}
                 key={product.id}
-                className="p-2 mb-2 hover:bg-blue-200 hover:rounded-md"
+                className="block p-2 hover:bg-blue-200 "
               >
                 <div className="flex flex-row justify-start w-full">
                   <div className="w-1/4 border rounded-lg">
@@ -207,7 +208,7 @@ function SearchBar() {
                     <div className="font-black">£{product.price}</div>
                   </div>
                 </div>
-              </div>
+              </a>
             ))}
           </div>
         )}
