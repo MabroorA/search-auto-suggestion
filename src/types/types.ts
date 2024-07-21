@@ -25,7 +25,7 @@ export interface Data {
 }
 
 export enum TOGGLE_SECTIONS {
-    SUGGESTIONS = "suggestions",
-    PRODUCTS = "products",
-    COLLECTIONS = "collections",
-  }
+  SUGGESTIONS = "suggestions",
+  PRODUCTS = "products",
+  COLLECTIONS = "collections",
+}
