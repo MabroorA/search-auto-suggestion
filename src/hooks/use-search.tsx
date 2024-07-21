@@ -1,37 +1,35 @@
 import { useEffect, useState } from "react";
-import { Data, SuggestionTerm, Product, Collection } from "../types/types";
+import { Data } from "../types";
+import { filterDataresults } from "../utils";
 
 type UseSearchProps = {
-  input: string;
+  searchValue: string;
   url: string;
   charectersBeforeSuggest?: number;
 };
 
+const searchResultsDefaultValue: Data = {
+  suggestion_terms: [],
+  collections: [],
+  products: [],
+};
+
 const useSearch = ({
-  input,
+  searchValue,
   url,
   charectersBeforeSuggest = 1,
 }: UseSearchProps) => {
-  const [query, setQuery] = useState<string>(input);
-  const [dataResult, setDataResult] = useState<Data | null>(null);
-  const [suggestions, setSuggestionResults] = useState<SuggestionTerm[]>([]);
-  const [collections, setCollectionResults] = useState<Collection[]>([]);
-  const [products, setProductResults] = useState<Product[]>([]);
+  const [searchResults, setSearchResults] = useState<Data>(
+    searchResultsDefaultValue
+  );
 
   useEffect(() => {
-    if (query.length >= charectersBeforeSuggest) {
+    if (searchValue.length >= charectersBeforeSuggest) {
       fetchSuggestionResults();
-      filterDataresults(query);
     } else {
-      setSuggestionResults([]);
-      setCollectionResults([]);
-      setProductResults([]);
+      setSearchResults(searchResultsDefaultValue);
     }
-  }, [query, dataResult, charectersBeforeSuggest]);
-
-  useEffect(() => {
-    setQuery(input);
-  }, [input]);
+  }, [searchValue, url, charectersBeforeSuggest]);
 
   const fetchSuggestionResults = async () => {
     try {
@@ -40,39 +38,14 @@ const useSearch = ({
         throw new Error("Network response was not ok");
       }
       const data: Data = await res.json();
-      setDataResult(data);
-      filterDataresults(query);
+
+      const filteredData = filterDataresults(data, searchValue);
+      setSearchResults(filteredData);
     } catch (error) {
       console.error("Error Fetching Results Data", error);
     }
   };
 
-  const filterDataresults = (query: string) => {
-    try {
-      if (!dataResult) {
-        throw new Error("DataResult is null");
-      }
-      // filter suggestions with query only
-      const filteredSuggestions = dataResult.suggestion_terms.filter(
-        (suggestion) =>
-          suggestion.term.toLowerCase().includes(query.toLowerCase())
-      );
-      // filter collections
-      const filteredCollections = dataResult.collections.filter((collection) =>
-        collection.title.toLowerCase().includes(query.toLowerCase())
-      );
-      // filter products
-      const filteredProducts = dataResult.products.filter((product) =>
-        product.title.toLowerCase().includes(query.toLowerCase())
-      );
-      setSuggestionResults(filteredSuggestions);
-      setCollectionResults(filteredCollections);
-      setProductResults(filteredProducts);
-    } catch (error) {
-      console.error("Error Filtering Data Results", error);
-    }
-  };
-
-  return { dataResult, suggestions, collections, products };
+  return { searchResults };
 };
 export default useSearch;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TOGGLE_SECTIONS } from "../types/types";
+import { TOGGLE_SECTIONS } from "../types";
 import useSearch from "../hooks/use-search";
 import useSectionToggles from "../hooks/use-section-toggles";
 
@@ -8,11 +8,17 @@ function SearchBar() {
   const [charectersBeforeSuggest, setCharectersBeforeSuggest] =
     useState<number>(1);
 
-  const { suggestions, collections, products, dataResult } = useSearch({
-    input: query,
+  const { searchResults } = useSearch({
+    searchValue: query,
     url: "/mockdata.json",
     charectersBeforeSuggest: charectersBeforeSuggest,
   });
+
+  const {
+    collections,
+    products,
+    suggestion_terms: suggestions,
+  } = searchResults;
 
   const boldQueryInTerm = (term: string, query: string) => {
     if (!query.trim()) return term;
@@ -22,10 +28,9 @@ function SearchBar() {
     const startIndex = lowerTerm.indexOf(lowerQuery);
 
     if (startIndex === -1) {
-      return term; // query is not in term
+      return term;
     }
 
-    // get the part before, the part that matches, and the part after
     const beforeMatch = term.slice(0, startIndex);
     const match = term.slice(startIndex, startIndex + query.length);
     const afterMatch = term.slice(startIndex + query.length);
@@ -44,6 +49,10 @@ function SearchBar() {
     isSuggestionsOpen,
     handleToggleSection,
   } = useSectionToggles();
+
+  const renderSuggestions = isSuggestionsOpen && suggestions.length > 0;
+  const renderProducts = isProductsOpen && products.length > 0;
+  const renderCollections = isCollectionsOpen && collections.length > 0;
 
   return (
     <>
@@ -116,119 +125,93 @@ function SearchBar() {
       </div>
 
       {/* Results Section */}
-      {query.trim() && dataResult && (
-        <div className="mt-4 border border-gray-300 rounded-lg">
-          {/* Suggestions */}
-          {isSuggestionsOpen && (
-            <div>
-              {suggestions.length > 0 ? (
-                <div className="flex flex-row justify-between p-2 text-gray-700 bg-slate-300">
-                  <div className="w-full font-medium">SUGGESTIONS</div>
-                  <button
-                    onClick={() =>
-                      handleToggleSection(TOGGLE_SECTIONS.SUGGESTIONS)
-                    }
-                  >
-                    Close
-                  </button>
-                </div>
-              ) : (
-                ""
-              )}
-
-              {suggestions.length > 0
-                ? suggestions.map((suggestion) => (
-                    <div
-                      key={suggestion.term}
-                      className="p-2 mb-2 hover:bg-blue-200 hover:rounded-md"
-                    >
-                      <a href={suggestion.url} className="text-black-500">
-                        {boldQueryInTerm(suggestion.term, query)}
-                      </a>
-                    </div>
-                  ))
-                : ""}
+      <div className="mt-4 rounded-lg">
+        {/* Suggestions */}
+        {renderSuggestions && (
+          <div>
+            <div className="flex flex-row justify-between p-2 text-gray-700 bg-slate-300">
+              <div className="w-full font-medium">SUGGESTIONS</div>
+              <button
+                onClick={() => handleToggleSection(TOGGLE_SECTIONS.SUGGESTIONS)}
+              >
+                Close
+              </button>
             </div>
-          )}
 
-          {/* Collections */}
-          {isCollectionsOpen && (
-            <div>
-              {collections.length > 0 ? (
-                <div className="flex flex-row justify-between p-2 text-gray-700 bg-slate-300">
-                  <div className="w-full font-medium">COLLECTIONS</div>
-                  <button
-                    onClick={() =>
-                      handleToggleSection(TOGGLE_SECTIONS.COLLECTIONS)
-                    }
-                  >
-                    Close
-                  </button>
+            {suggestions.map((suggestion) => (
+              <a
+                key={suggestion.term}
+                href={suggestion.url}
+                className="block p-2 hover:bg-blue-200"
+              >
+                <div className="w-full text-black-500">
+                  {boldQueryInTerm(suggestion.term, query)}
                 </div>
-              ) : (
-                ""
-              )}
-              {collections.length > 0
-                ? collections.map((collection) => (
-                    <div
-                      key={collection.id}
-                      className="p-2 mb-2 hover:bg-blue-200 hover:rounded-md"
-                    >
-                      <a href={collection.url} className="text-black-500">
-                        {boldQueryInTerm(collection.title, query)}
-                      </a>
-                    </div>
-                  ))
-                : ""}
-            </div>
-          )}
-          {/* Products */}
-          {isProductsOpen && (
-            <div>
-              {products.length > 0 ? (
-                <div className="flex flex-row justify-between p-2 text-gray-700 bg-slate-300">
-                  <div className="w-full font-medium">PRODUCTS</div>
-                  <button
-                    onClick={() =>
-                      handleToggleSection(TOGGLE_SECTIONS.PRODUCTS)
-                    }
-                  >
-                    Close
-                  </button>
-                </div>
-              ) : (
-                ""
-              )}
+              </a>
+            ))}
+          </div>
+        )}
 
-              {products.length > 0
-                ? products.map((product) => (
-                    <div
-                      key={product.id}
-                      className="p-2 mb-2 hover:bg-blue-200 hover:rounded-md"
-                    >
-                      <div className="flex flex-row justify-start w-full">
-                        <div className="w-1/4">
-                          <img
-                            src={product.image}
-                            alt={product.title}
-                            className="text-black-500"
-                          />
-                        </div>
-                        <div className="flex flex-col ml-2">
-                          <div className="text-lg font-semibold">
-                            {product.title}
-                          </div>
-                          <div>{product.brand}</div>
-                          <div className="font-black">£{product.price}</div>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                : ""}
+        {/* Collections */}
+        {renderCollections && (
+          <div>
+            <div className="flex flex-row justify-between p-2 text-gray-700 bg-slate-300">
+              <div className="w-full font-medium">COLLECTIONS</div>
+              <button
+                onClick={() => handleToggleSection(TOGGLE_SECTIONS.COLLECTIONS)}
+              >
+                Close
+              </button>
             </div>
-          )}
-        </div>
-      )}
+            {collections.map((collection) => (
+              <a
+                key={collection.id}
+                href={collection.url}
+                className="block p-2 hover:bg-blue-200"
+              >
+                <div className="w-full text-black-500">
+                  {boldQueryInTerm(collection.title, query)}
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+        {/* Products */}
+        {renderProducts && (
+          <div>
+            <div className="flex flex-row justify-between p-2 text-gray-700 bg-slate-300">
+              <div className="w-full font-medium">PRODUCTS</div>
+              <button
+                onClick={() => handleToggleSection(TOGGLE_SECTIONS.PRODUCTS)}
+              >
+                Close
+              </button>
+            </div>
+
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="p-2 mb-2 hover:bg-blue-200 hover:rounded-md"
+              >
+                <div className="flex flex-row justify-start w-full">
+                  <div className="w-1/4 border rounded-lg">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      className="text-center"
+                    />
+                  </div>
+                  <div className="flex flex-col ml-2">
+                    <div className="text-lg font-semibold">{product.title}</div>
+                    <div>{product.brand}</div>
+                    <div className="font-black">£{product.price}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
     </>
   );
 }

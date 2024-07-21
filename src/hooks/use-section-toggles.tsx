@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { TOGGLE_SECTIONS } from "../types/types";
+import { TOGGLE_SECTIONS } from "../types";
 
 const useSectionToggles = () => {
   const [isSuggestionsOpen, setIsSuggestionsOpen] = useState<boolean>(true);
